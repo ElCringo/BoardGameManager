@@ -18,7 +18,6 @@ router.get("/board-games", (ctx) => {
 
 router.post("/board-games", (ctx) => {
   const body = ctx.request.body;
-  console.log(body);
 
   if (!body.name) {
     ctx.status = 400;
