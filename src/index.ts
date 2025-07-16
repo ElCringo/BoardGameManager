@@ -1,19 +1,31 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
+import { configDotenv } from "dotenv";
+import { config } from "dotenv";
+import { db } from "./lib/mongo.js";
+
+config({
+  path: [".env.local"],
+});
 
 const app = new Hono();
 
 interface BoardGame {
-  id: number;
+  _id: string;
   name: string;
   playersMin: number;
   playersMax: number;
   boardGameGeekId?: number;
 }
 
-const boardGames: BoardGame[] = [];
+app.get("/board-games", async (c) => {
+  const client = await db();
+  const cursor = await client
+    .db("board-game-manager")
+    .collection("games")
+    .find();
+  const boardGames = await cursor.toArray();
 
-app.get("/board-games", (c) => {
   return c.json(boardGames);
 });
 
@@ -46,14 +58,27 @@ app.post("/board-games", async (c) => {
     );
   }
 
-  const newBoardGame = {
-    ...payload,
-    id: boardGames.length + 1,
-  };
+  const client = await db();
 
-  boardGames.push(newBoardGame);
+  const existing = await client
+    .db("board-game-manager")
+    .collection<BoardGame>("games")
+    .findOne({
+      name: payload.name,
+    });
 
-  return c.json(newBoardGame, 201);
+  if (existing?._id != null) {
+    return c.json(
+      {
+        message: "A game with this name already exists",
+      },
+      400
+    );
+  }
+
+  await client.db("board-game-manager").collection("games").insertOne(payload);
+
+  return c.json(payload, 201);
 });
 
 serve(
