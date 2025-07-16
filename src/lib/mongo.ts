@@ -2,7 +2,7 @@ import { MongoClient, ServerApiVersion } from "mongodb";
 
 let client: MongoClient | null = null;
 
-export async function db() {
+export function db() {
   if (client == null) {
     const uri = process.env.MONGO_CONNECTION_STRING!;
 
@@ -14,5 +14,5 @@ export async function db() {
       },
     });
   }
-  return client;
+  return client.db("board-game-manager");
 }

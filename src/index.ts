@@ -3,6 +3,7 @@ import { Hono } from "hono";
 import { configDotenv } from "dotenv";
 import { config } from "dotenv";
 import { db } from "./lib/mongo.js";
+import { createBoardGame, type BoardGame } from "./lib/models/boardGame.js";
 
 config({
   path: [".env.local"],
@@ -10,24 +11,15 @@ config({
 
 const app = new Hono();
 
-interface BoardGame {
-  _id: string;
-  name: string;
-  playersMin: number;
-  playersMax: number;
-  boardGameGeekId?: number;
-}
-
 app.get("/board-games", async (c) => {
-  const client = await db();
-  const cursor = await client
-    .db("board-game-manager")
-    .collection("games")
-    .find();
+  // TODO: Refactor -> Move this into boardGame.ts
+  const cursor = db().collection("games").find();
   const boardGames = await cursor.toArray();
 
   return c.json(boardGames);
 });
+
+// TODO: Re-implement delete-function
 
 app.post("/board-games", async (c) => {
   console.log("foo");
@@ -58,25 +50,18 @@ app.post("/board-games", async (c) => {
     );
   }
 
-  const client = await db();
+  try {
+    await createBoardGame(payload);
+  } catch (error) {
+    if (!(error instanceof Error)) {
+      console.error(error);
+      return c.status(500);
+    }
 
-  const existing = await client
-    .db("board-game-manager")
-    .collection<BoardGame>("games")
-    .findOne({
-      name: payload.name,
+    return c.json({
+      message: error.message,
     });
-
-  if (existing?._id != null) {
-    return c.json(
-      {
-        message: "A game with this name already exists",
-      },
-      400
-    );
   }
-
-  await client.db("board-game-manager").collection("games").insertOne(payload);
 
   return c.json(payload, 201);
 });
