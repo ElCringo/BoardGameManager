@@ -1,9 +1,13 @@
-import { serve } from "@hono/node-server";
 import { Hono } from "hono";
-import { configDotenv } from "dotenv";
+import { serve } from "@hono/node-server";
+import { configDotenv } from "dotenv"; // doesn't seem to be used rn.
 import { config } from "dotenv";
-import { db } from "./lib/mongo.js";
+import { db } from "./lib/mongo.js"; // doesn't seem to be used rn.
 import { createBoardGame, type BoardGame } from "./lib/models/boardGame.js";
+import { getAllBoardGames } from "./lib/models/boardGame.js";
+import { deleteBoardGame } from "./lib/models/boardGame.js";
+import { changeBoardGame } from "./lib/models/boardGame.js";
+
 
 config({
   path: [".env.local"],
@@ -11,16 +15,55 @@ config({
 
 const app = new Hono();
 
+//GET - already connected to a function in boardGame.ts
 app.get("/board-games", async (c) => {
-  // TODO: Refactor -> Move this into boardGame.ts
-  const cursor = db().collection("games").find();
-  const boardGames = await cursor.toArray();
-
-  return c.json(boardGames);
+  const games = await getAllBoardGames();
+  return c.json(games);
 });
 
-// TODO: Re-implement delete-function
+//DELETE - already connected to a function in boardGame.ts
+app.delete("/board-games/:id", async (c) => {
+  const id = c.req.param("id");
 
+  if (!id) {
+    return c.json({ message: "No ID provided" }, 400);
+  }
+
+  try {
+    const result = await deleteBoardGame(id);
+    return c.json(result);
+  } catch (error) {
+    return c.json(
+      {
+        message: "The game doesn't exist",
+      },
+      400
+    );
+  }
+});
+
+//PUT - already connected to a function in boardGame.ts
+app.put("/board-games/:id", async (c) => {
+  const id = c.req.param("id");
+  const updateData = await c.req.json();
+
+  if (!id) {
+    return c.json({ message: "No Id provided" }, 400);
+  }
+  try {
+    const result = await changeBoardGame(id, updateData);
+    return c.json(result);
+  } catch (error) {
+    return c.json(
+      {
+        message: "The game you want to change doesn't exist",
+      },
+      400
+    );
+  }
+});
+
+//POST - already connected to a function in boardGame.ts
 app.post("/board-games", async (c) => {
   console.log("foo");
   const payload = await c.req.json();
@@ -49,7 +92,6 @@ app.post("/board-games", async (c) => {
       400
     );
   }
-
   try {
     await createBoardGame(payload);
   } catch (error) {
@@ -66,6 +108,8 @@ app.post("/board-games", async (c) => {
   return c.json(payload, 201);
 });
 
+//This part initiates the server, starts listening on a port,
+//and begins handling requests.
 serve(
   {
     fetch: app.fetch,
