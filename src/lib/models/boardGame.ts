@@ -16,8 +16,6 @@ function collection() {
   return db().collection<InsertModel>(collectionName);
 }
 
-// Lesen/Schreiben/Löschen von BoardGames in unserer Datenbank
-
 //POST:
 export async function createBoardGame(game: InsertModel) {
   const existing = await collection().findOne({
@@ -66,6 +64,6 @@ export async function changeBoardGame(id: string, updateData: Record<string, unk
     throw new Error("Board game not found");
   }
 
-  await collection().updateOne({ _id: objectId }, { $set: updateData }); // the parameters to change need to be included!
+  await collection().updateOne({ _id: objectId }, { $set: updateData });
   return { updated: true };
 }
