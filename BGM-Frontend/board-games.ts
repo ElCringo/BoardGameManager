@@ -1,0 +1,1 @@
+/*Here goes the logic for the table with board games.*/

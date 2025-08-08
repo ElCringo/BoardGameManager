@@ -1,0 +1,101 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-image: url('/static/Background.jpg');
+    background-size: cover;
+    /* Scales image to cover entire screen */
+    background-repeat: no-repeat;
+    /* Prevents tiling */
+    background-position: center;
+    /* image centered */
+    font-family: sans-serif;
+    color: white;
+    /* font color */
+}
+
+.header-container {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.page-title {
+    margin: 0;
+    font-size: 7em;
+    font-family: 'Cinzel Decorative', cursive;
+    color: #2b1b1b;
+    text-shadow: #bea535 0 0 10px;
+    letter-spacing: 1px;
+}
+
+.separator {
+    filter: sepia(1) hue-rotate(10deg) saturate(5);
+    opacity: 0.15;
+    width: 100%;
+    display: block;
+    margin: 0px auto;
+}
+
+.buttons {
+    justify-content: center;
+    gap: 1.5em;
+    top: 5%;
+}
+
+.customB {
+    background-color: transparent;
+    border: 2px solid transparent;
+    color: #2b1b1b;
+    padding: 10px 20px;
+    font-family: 'Cinzel Decorative';
+    font-size: 3em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-shadow: #bea535 0 0 10px;
+}
+
+.customB:hover {
+    background-color: rgba(190, 165, 53, 0.5);
+}
+
+.customB:active {
+    background-color: #bea535;
+}
+
+.heading {
+    font-size: 5em;
+    text-align: center;
+    font-family: 'Cinzel Decorative';
+    color: #2b1b1b;
+    text-shadow: #bea535 0 0 10px;
+    letter-spacing: 1px;
+}
+
+.returnB {
+    background-color: transparent;
+    border: 2px solid transparent;
+    color: #2b1b1b;
+    padding: 10px 20px;
+    font-family: 'Cinzel Decorative';
+    font-size: 2.3em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-shadow: #fad017 0 0 10px;
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.returnB:hover {
+    background-color: rgba(190, 165, 53, 0.5);
+}
+
+.returnB:active {
+    background-color: #bea535;
+}
