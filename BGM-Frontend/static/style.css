@@ -34,7 +34,7 @@ body {
 
 .separator {
     filter: sepia(1) hue-rotate(10deg) saturate(5);
-    opacity: 0.15;
+    opacity: 0.25;
     width: 100%;
     display: block;
     margin: 0px auto;
@@ -67,6 +67,11 @@ body {
 }
 
 .heading {
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
     font-size: 5em;
     text-align: center;
     font-family: 'Cinzel Decorative';
