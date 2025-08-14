@@ -1,0 +1,14 @@
+{
+  "name": "bgm-frontend",
+  "version": "1.0.0",
+  "main": "frontend-server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "hono": "^4.9.1"
+  }
+}

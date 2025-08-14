@@ -7,13 +7,16 @@ import { createBoardGame, type BoardGame } from "./lib/models/boardGame.js";
 import { getAllBoardGames } from "./lib/models/boardGame.js";
 import { deleteBoardGame } from "./lib/models/boardGame.js";
 import { changeBoardGame } from "./lib/models/boardGame.js";
-
+import { cors } from "hono/cors";
 
 config({
   path: [".env.local"],
 });
 
 const app = new Hono();
+
+app.use("*", cors());
+
 
 //GET - already connected to a function in boardGame.ts
 app.get("/board-games", async (c) => {

@@ -5,13 +5,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/style.css" />
+    <link rel="stylesheet" href="/BGM-Frontend/static/style.css" />
     <title>Board Games</title>
 </head>
 
 <body>
     <h1 class="heading">List of Board Games</h1>
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>Min. no. of players</th>
+            <th>Max. no. of players</th>
+            <th>ID</th>
+        </tr>
+        <tr>
+            <td>placeholder for game name1</td>
+            <td>placeholder for min. no. of players1</td>
+            <td>placeholder for max. no. of players1</td>
+            <td>placeholder for game ID1</td>
+        </tr>
+    </table>
     <button onclick="location.href='index.html'" class="returnB">Return to Main Page</button>
+
+    <script>
+        async function loadBoardGames() {
+            try {
+                const response = await fetch("http://localhost:3000/board-games");
+                const games = await response.json();
+
+                const table = document.querySelector(".table");
+                const existingRows = table.querySelectorAll("tr:not(:first-child)");
+                existingRows.forEach(row => row.remove()); //this one removes the placeholders.
+
+                games.forEach(game => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+          <td>${game.name}</td>
+          <td>${game.playersMin}</td>
+          <td>${game.playersMax}</td>
+          <td>${game._id}</td>
+        `;
+                    table.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Failed to load board games:", error);
+            }
+        }
+
+        window.onload = loadBoardGames;
+    </script>
+
+
 </body>
 
 <script src="/BGM-Frontend/board-games.ts"></script>
