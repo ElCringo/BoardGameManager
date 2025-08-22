@@ -22,12 +22,6 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>placeholder for game name1</td>
-                    <td>placeholder for min. no. of players1</td>
-                    <td>placeholder for max. no. of players1</td>
-                    <td>placeholder for game ID1</td>
-                </tr>
             </tbody>
         </table>
 
@@ -56,7 +50,7 @@
           <td>${game._id}</td>
           <td>
             <button class="edit-btn">Edit</button>
-            <button class="delete-btn">Delete</button>
+            <button class="delete-btn" style="display:none;">Delete</button>
             <button class="commit-btn" style="display:none;">Commit</button>
           </td>
         `;
@@ -70,7 +64,7 @@
 
                         editBtn.addEventListener("click", () => enterEditMode(row));
                         commitBtn.addEventListener("click", () => commitChanges(row, game._id));
-                        deleteBtn.addEventListener("click", () => confirmDelete(row, game._id));
+                        deleteBtn.addEventListener("click", () => confirmDelete(row, game._id, game.name));
                     });
                 } catch (error) {
                     console.error("Failed to load board games:", error);
@@ -88,6 +82,7 @@
 
                 row.querySelector(".edit-btn").style.display = "none";
                 row.querySelector(".commit-btn").style.display = "inline-block";
+                row.querySelector(".delete-btn").style.display = "inline-block";
             }
 
             async function commitChanges(row, id) {
@@ -116,13 +111,14 @@
 
                     row.querySelector(".edit-btn").style.display = "inline-block";
                     row.querySelector(".commit-btn").style.display = "none";
+                    row.querySelector(".delete-btn").style.display = "none";
                 } catch (error) {
                     console.error("Error committing changes:", error);
                 }
             }
 
-            async function confirmDelete(row, id) {
-                const confirmed = confirm(`Are you sure you want to delete "${game.name}"?`); //This row seems to bug this function. It works when the text is "Are you sure you want to delete this game", but doesn't work in the current form.
+            async function confirmDelete(row, id, name) {
+                const confirmed = confirm(`Are you sure you want to delete "${name}"?`); //This row seems to bug this function. It works when the text is "Are you sure you want to delete this game", but doesn't work in the current form.
                 if (!confirmed) return;
 
                 try {
