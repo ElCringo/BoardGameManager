@@ -38,7 +38,6 @@
                     const games = await response.json();
 
                     const tableBody = document.querySelector(".table tbody");
-                    tableBody.innerHTML = ""; // Clearing existing rows. Not necessary in this version because I deleted the default content. I will keep it though, in case I change my mind.
 
                     games.forEach(game => {
                         const row = document.createElement("tr");

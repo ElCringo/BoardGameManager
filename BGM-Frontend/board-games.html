@@ -37,7 +37,6 @@
 
                 const table = document.querySelector(".table");
                 const existingRows = table.querySelectorAll("tr:not(:first-child)");
-                existingRows.forEach(row => row.remove());
 
                 games.forEach(game => {
                     const row = document.createElement("tr");
