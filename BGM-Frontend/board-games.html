@@ -10,27 +10,32 @@
 </head>
 
 <body>
-    <h1 class="heading">List of Board Games</h1>
-    <table class="table">
-        <tr>
-            <th>Name</th>
-            <th>Min. no. of players</th>
-            <th>Max. no. of players</th>
-            <th>ID</th>
-        </tr>
-        <tr>
-            <td>placeholder for game name1</td>
-            <td>placeholder for min. no. of players1</td>
-            <td>placeholder for max. no. of players1</td>
-            <td>placeholder for game ID1</td>
-        </tr>
-    </table>
-    <br>
-    <button>Add new game</button> <!--This is going to lead to a page where a new game can be added.-->
-    <button>Change existing game</button>
-    <!--This is going to lead to a page with the same table, where individual existing games can be edited.-->
-    <button onclick="location.href='index.html'" class="returnB">Return to Main Page</button>
+    <div class="table-container">
+        <h1 class="heading">List of Board Games</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Min. no. of players</th>
+                    <th>Max. no. of players</th>
+                    <th>ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>placeholder for game name1</td>
+                    <td>placeholder for min. no. of players1</td>
+                    <td>placeholder for max. no. of players1</td>
+                    <td>placeholder for game ID1</td>
+                </tr>
+            </tbody>
+        </table>
 
+        <button onclick="location.href='change-board-games.html'" class="editB">Edit games</button>
+        <!--This is going to lead to a page with the same table, where individual existing games can be edited/deleted, and new games can be added.-->
+    </div>
+    <br>
+    <button onclick="location.href='index.html'" class="returnB">Return to Main Page</button>
     <script>
         async function loadBoardGames() {
             try {
@@ -61,7 +66,5 @@
 
 
 </body>
-
-<script src="/BGM-Frontend/board-games.ts"></script>
 
 </html>

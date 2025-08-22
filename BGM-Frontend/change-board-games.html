@@ -10,6 +10,137 @@
 </head>
 
 <body>
+    <div class="table-container">
+        <h1 class="heading">List of Board Games</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Min. no. of players</th>
+                    <th>Max. no. of players</th>
+                    <th>ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>placeholder for game name1</td>
+                    <td>placeholder for min. no. of players1</td>
+                    <td>placeholder for max. no. of players1</td>
+                    <td>placeholder for game ID1</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button onclick="location.href='board-games.html'" class="editB">Finish editing</button>
+    </div>
+    <br>
+    <button onclick="location.href='index.html'" class="returnB">Return to Main Page</button>
+    <div class="button-wrap">
+
+        <script>
+            async function loadBoardGames() {
+                try {
+                    const response = await fetch("http://localhost:3000/board-games");
+                    const games = await response.json();
+
+                    const tableBody = document.querySelector(".table tbody");
+                    tableBody.innerHTML = ""; // Clearing existing rows. Not necessary in this version because I deleted the default content. I will keep it though, in case I change my mind.
+
+                    games.forEach(game => {
+                        const row = document.createElement("tr");
+
+                        row.innerHTML = `
+          <td><span class="name">${game.name}</span></td>
+          <td><span class="min">${game.playersMin}</span></td>
+          <td><span class="max">${game.playersMax}</span></td>
+          <td>${game._id}</td>
+          <td>
+            <button class="edit-btn">Edit</button>
+            <button class="delete-btn">Delete</button>
+            <button class="commit-btn" style="display:none;">Commit</button>
+          </td>
+        `;
+
+                        tableBody.appendChild(row);
+
+                        // Attaching event listeners
+                        const editBtn = row.querySelector(".edit-btn");
+                        const deleteBtn = row.querySelector(".delete-btn");
+                        const commitBtn = row.querySelector(".commit-btn");
+
+                        editBtn.addEventListener("click", () => enterEditMode(row));
+                        commitBtn.addEventListener("click", () => commitChanges(row, game._id));
+                        deleteBtn.addEventListener("click", () => confirmDelete(row, game._id));
+                    });
+                } catch (error) {
+                    console.error("Failed to load board games:", error);
+                }
+            }
+
+            function enterEditMode(row) {
+                const nameSpan = row.querySelector(".name");
+                const minSpan = row.querySelector(".min");
+                const maxSpan = row.querySelector(".max");
+
+                nameSpan.innerHTML = `<input type="text" value="${nameSpan.textContent}">`;
+                minSpan.innerHTML = `<input type="number" value="${minSpan.textContent}">`;
+                maxSpan.innerHTML = `<input type="number" value="${maxSpan.textContent}">`;
+
+                row.querySelector(".edit-btn").style.display = "none";
+                row.querySelector(".commit-btn").style.display = "inline-block";
+            }
+
+            async function commitChanges(row, id) {
+                const nameInput = row.querySelector(".name input").value;
+                const minInput = parseInt(row.querySelector(".min input").value);
+                const maxInput = parseInt(row.querySelector(".max input").value);
+
+                const updateData = {
+                    name: nameInput,
+                    playersMin: minInput,
+                    playersMax: maxInput
+                };
+
+                try {
+                    const response = await fetch(`http://localhost:3000/board-games/${id}`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(updateData)
+                    });
+
+                    if (!response.ok) throw new Error("Failed to update");
+
+                    row.querySelector(".name").textContent = nameInput;
+                    row.querySelector(".min").textContent = minInput;
+                    row.querySelector(".max").textContent = maxInput;
+
+                    row.querySelector(".edit-btn").style.display = "inline-block";
+                    row.querySelector(".commit-btn").style.display = "none";
+                } catch (error) {
+                    console.error("Error committing changes:", error);
+                }
+            }
+
+            async function confirmDelete(row, id) {
+                const confirmed = confirm(`Are you sure you want to delete "${game.name}"?`); //This row seems to bug this function. It works when the text is "Are you sure you want to delete this game", but doesn't work in the current form.
+                if (!confirmed) return;
+
+                try {
+                    const response = await fetch(`http://localhost:3000/board-games/${id}`, {
+                        method: "DELETE"
+                    });
+
+                    if (!response.ok) throw new Error("Failed to delete");
+
+                    row.remove();
+                } catch (error) {
+                    console.error("Error deleting game:", error);
+                }
+            }
+
+            window.onload = loadBoardGames;
+            /*I intend to add the possibility to add new games to this window.*/
+        </script>
 
 </body>
 

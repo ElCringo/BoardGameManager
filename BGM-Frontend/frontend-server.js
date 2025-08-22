@@ -16,6 +16,9 @@ app.get('/login', serveStatic({ path: './login.html', root: './' }));
 // Route: board games
 app.get('/board-games', serveStatic({ path: './board-games.html', root: './' }));
 
+//Route: change board games
+app.get('/change-board-games', serveStatic({ path: './change-board-games.html', root: './' }));
+
 // Route: calendar
 app.get('/calendar', serveStatic({ path: './calendar.html', root: './' }));
 

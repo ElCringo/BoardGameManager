@@ -1,18 +1,17 @@
 html,
+
 body {
     height: 100%;
     margin: 0;
     padding: 0;
+    padding-top: 40px;
     background-image: url('Background.jpg');
     background-size: cover;
-    /* Scales image to cover entire screen */
     background-repeat: no-repeat;
-    /* Prevents tiling */
-    background-position: center;
-    /* image centered */
+    background-attachment: fixed;
+    background-position: center top;
     font-family: sans-serif;
     color: white;
-    /* font color */
 }
 
 .header-container {
@@ -105,13 +104,20 @@ body {
     background-color: #bea535;
 }
 
+.table-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
 .table {
     background-color: rgba(190, 165, 53, 0.5);
-    position: absolute;
-    top: 35%;
+    margin-top: 200px;
+    /*position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    text-align: center;
+    text-align: center;*/
 }
 
 .table th {
@@ -129,4 +135,42 @@ body {
     font-size: 1.2em;
     padding: 10px;
     font-family: 'Verdana';
+}
+
+.editB {
+    background-color: transparent;
+    border: 2px solid transparent;
+    color: #2b1b1b;
+    padding: 10px 20px;
+    font-family: 'Cinzel Decorative';
+    font-size: 2em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-shadow: #fad017 0 0 10px;
+}
+
+.editB:hover {
+    background-color: rgba(190, 165, 53, 0.5);
+}
+
+.editB:active {
+    background-color: #bea535;
+}
+
+.button-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+tr {
+    word-wrap: break-word;
+    white-space: normal;
+    max-width: 200px;
+}
+
+span {
+    word-wrap: break-word;
+    white-space: normal;
+    max-width: 200px;
 }
